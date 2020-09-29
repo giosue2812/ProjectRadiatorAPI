@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ProjectRadiator.Models
 {
@@ -11,13 +13,19 @@ namespace ProjectRadiator.Models
             MilestonesTypeMilestones = new HashSet<MilestonesTypeMilestones>();
         }
 
+        [Key]
         public int IdMilestones { get; set; }
+        [Column(TypeName = "date")]
         public DateTime DateMilestones { get; set; }
+        [Column(TypeName = "datetime")]
         public DateTime CreationDate { get; set; }
+        [Column(TypeName = "datetime")]
         public DateTime? LastModificationDate { get; set; }
         public bool IsSoftDeleted { get; set; }
 
+        [InverseProperty("IdMilestonesNavigation")]
         public virtual ICollection<MilestonesProject> MilestonesProject { get; set; }
+        [InverseProperty("IdMilestonesNavigation")]
         public virtual ICollection<MilestonesTypeMilestones> MilestonesTypeMilestones { get; set; }
     }
 }
