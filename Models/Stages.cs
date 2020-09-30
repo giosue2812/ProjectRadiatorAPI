@@ -27,7 +27,7 @@ namespace ProjectRadiator.Models
         public virtual People IdPeopleNavigation { get; set; }
         [InverseProperty("IdStageNavigation")]
         public virtual ICollection<ProjectStage> ProjectStage { get; set; }
-        [InverseProperty("IdTypeStagesNavigation")]
+        [InverseProperty("IdStagesNavigation")]
         public virtual ICollection<StagesTypeStages> StagesTypeStages { get; set; }
     }
 }

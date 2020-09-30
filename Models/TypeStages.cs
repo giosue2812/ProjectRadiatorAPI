@@ -24,7 +24,7 @@ namespace ProjectRadiator.Models
         public DateTime? LastModificationDate { get; set; }
         public bool IsSoftDeleted { get; set; }
 
-        [InverseProperty("IdStagesNavigation")]
+        [InverseProperty("IdTypeStagesNavigation")]
         public virtual ICollection<StagesTypeStages> StagesTypeStages { get; set; }
     }
 }

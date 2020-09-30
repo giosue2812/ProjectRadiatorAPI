@@ -13,10 +13,10 @@ namespace ProjectRadiator.Models
         public int IdTypeStages { get; set; }
 
         [ForeignKey(nameof(IdStages))]
-        [InverseProperty(nameof(TypeStages.StagesTypeStages))]
-        public virtual TypeStages IdStagesNavigation { get; set; }
-        [ForeignKey(nameof(IdTypeStages))]
         [InverseProperty(nameof(Stages.StagesTypeStages))]
-        public virtual Stages IdTypeStagesNavigation { get; set; }
+        public virtual Stages IdStagesNavigation { get; set; }
+        [ForeignKey(nameof(IdTypeStages))]
+        [InverseProperty(nameof(TypeStages.StagesTypeStages))]
+        public virtual TypeStages IdTypeStagesNavigation { get; set; }
     }
 }
