@@ -8,6 +8,7 @@ namespace ProjectRadiator.DTO
 {
     public class ProjectDetailDTO
     {
+        public int IdProject { get; set; }
         public string Titre { get; set; }
         public string Society { get; set; }
         public string Description { get; set; }

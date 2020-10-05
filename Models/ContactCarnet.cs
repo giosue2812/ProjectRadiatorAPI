@@ -22,7 +22,7 @@ namespace ProjectRadiator.Models
         [StringLength(20)]
         public string Phone { get; set; }
         [Column(TypeName = "datetime")]
-        public DateTime CrationDate { get; set; }
+        public DateTime CreationDate { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime? LasModificationDate { get; set; }
         [Column("IS_SoftDeleted")]

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ProjectRadiator.Models.Responses
 {
-    public class PeopleTeamsShortResponse
+    public class PeopleTeamsShortResponse:ResponseBase
     {
         public List<TeamsBstormShortDTO> TeamsBstorm { get; set; }
 

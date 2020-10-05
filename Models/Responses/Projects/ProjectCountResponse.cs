@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ProjectRadiator.Models.Responses
 {
-    public class ProjectCountResponse
+    public class ProjectCountResponse:ResponseBase
     {
         public List<Project> Projects { get; set; }
         public int OpenProject 

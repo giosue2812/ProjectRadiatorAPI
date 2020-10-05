@@ -1,4 +1,10 @@
 ﻿using ProjectRadiator.DTO;
+using ProjectRadiator.DTO.Mettings;
+using ProjectRadiator.DTO.Millestones;
+using ProjectRadiator.DTO.Peoples;
+using ProjectRadiator.DTO.Projects;
+using ProjectRadiator.DTO.Stages;
+using ProjectRadiator.DTO.TypeFollows;
 using ProjectRadiator.Models;
 using System.Linq;
 
@@ -126,6 +132,106 @@ namespace ProjectRadiator.Utilis
                 result.ContactFirstName = society.People.FirstOrDefault().FirstName;
                 result.ContactLastName = society.People.FirstOrDefault().LastName;
             }
+            return result;
+        }
+
+        public static ClientDetailsDTO ToClientDetailsDTO(this People people)
+        {
+            if (people == null) return null;
+
+            ClientDetailsDTO result = new ClientDetailsDTO
+            {
+                FirstName = people.FirstName,
+                LastName = people.LastName,
+                Email = people.IdPeopleNavigation.Email,
+                AdressCity = people.IdPeopleNavigation.AdressCity,
+                AdressStreet = people.IdPeopleNavigation.AdressStreet,
+                AdressCountry = people.IdPeopleNavigation.AdressCountry,
+                AdressPostalCode = people.IdPeopleNavigation.AdressPostalCode,
+                Phone = people.IdPeopleNavigation.Phone,
+                Job = people.PeopleJob.FirstOrDefault().IdJobNavigation.Label,
+                Society = people.IdSocietyNavigation.Name
+            };
+
+            return result;
+        }
+
+        public static TypeFollowsDTO ToTypeFollowsDTO(this TypeFollow typeFollow)
+        {
+            if (typeFollow == null) return null;
+
+            TypeFollowsDTO result = new TypeFollowsDTO
+            {
+                Label = typeFollow.Label
+            };
+
+            return result;
+        }
+
+        public static MettingListDTO ToMettingListDTO(this Metting metting)
+        {
+            if (metting == null) return null;
+
+            MettingListDTO result = new MettingListDTO
+            {
+                MettingDate = metting.MettingDate,
+                Project = metting.IdProjectNavigation.Title,
+            };
+
+            if (metting.MettingPeople.Count == 0) result.Peoples = null;
+            else result.Peoples = metting.MettingPeople.Select(x => x.IdPeopleNavigation.ToPeoplesMettingDTO()).ToList();
+
+            return result;
+        }
+        
+        public static PeoplesMettingDTO ToPeoplesMettingDTO(this People people)
+        {
+            if (people == null) return null;
+
+            PeoplesMettingDTO result = new PeoplesMettingDTO
+            {
+                FirstName = people.FirstName,
+                LastName = people.LastName,
+                Email = people.IdPeopleNavigation.Email,
+                Phone = people.IdPeopleNavigation.Phone
+            };
+            return result;
+        }
+
+        public static MilestonesProjectListDTO ToMilestonesProjectListDTO(this Milestones milestones)
+        {
+            if (milestones == null) return null;
+
+            MilestonesProjectListDTO result = new MilestonesProjectListDTO
+            {
+                Project = milestones.MilestonesProject.FirstOrDefault().IdProjectNavigation.Title,
+                MillestonesDate = milestones.DateMilestones
+            };
+
+            result.MillestonesTypeDTOs = milestones.MilestonesProject.Select(x => x.IdMilestonesNavigation.MilestonesTypeMilestones.Select(x => x.IdTypeMilestonesNavigation.ToMilestonesTypeDTO()));
+            return result;
+        }
+
+        public static MilestonesTypeDTO ToMilestonesTypeDTO(this MilestonesType milestonesType)
+        {
+            if (milestonesType == null) return null;
+
+            MilestonesTypeDTO result = new MilestonesTypeDTO
+            {
+                MilestoneType = milestonesType.TypeMilestones
+            };
+
+            return result;
+        }
+
+        public static StageTypesDTO ToStageTypesDTO(this TypeStages typeStages)
+        {
+            if (typeStages == null) return null;
+
+            StageTypesDTO result = new StageTypesDTO
+            {
+                Label = typeStages.TypeStages1
+            };
             return result;
         }
     }

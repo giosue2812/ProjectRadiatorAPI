@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace ProjectRadiator.Models.Responses
 {
-    public class SocietyShortResponse
+    public class SocietyShortResponse:ResponseBase
     {
         public List<SocietyShortDTO> Societies {get;set;}
 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ProjectRadiator.Models.Responses
 {
-    public class PeopleClientShortResponse
+    public class PeopleClientShortResponse: ResponseBase
     {
         public List<ClientShortDTO> Peoples { get; set; }
         public int TotalPeopels

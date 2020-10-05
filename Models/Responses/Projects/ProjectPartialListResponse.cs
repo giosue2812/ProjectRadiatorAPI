@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ProjectRadiator.Models.Responses
 {
-    public class ProjectPartialListResponse
+    public class ProjectPartialListResponse:ResponseBase
     {
         public List<ProjectPartialListDTO> Projects { get; set; }
         public int TotalProjects 
@@ -15,13 +15,6 @@ namespace ProjectRadiator.Models.Responses
                     return Projects.Count();
                 }
             }
-        public string MessageResponse
-        {
-            get
-            {
-                return "List of partial project";
-            }
-        }
         public ProjectPartialListResponse()
         {
              Projects = new List<ProjectPartialListDTO>();

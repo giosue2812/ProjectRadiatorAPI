@@ -50,7 +50,7 @@ namespace ProjectRadiator.Models
             {
 #pragma warning disable CS1030 // Directive #warning
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=.\\;Data Source=desktop-pgp6817;Database=ProjectRadiator;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Data Source=desktop-pgp6817;Database=ProjectRadiator;Trusted_Connection=True;");
 #pragma warning restore CS1030 // Directive #warning
             }
         }
@@ -65,7 +65,7 @@ namespace ProjectRadiator.Models
 
                 entity.Property(e => e.AdressStreet).IsUnicode(false);
 
-                entity.Property(e => e.CrationDate).HasDefaultValueSql("(getdate())");
+                entity.Property(e => e.CreationDate).HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.Email).IsUnicode(false);
 
@@ -291,8 +291,6 @@ namespace ProjectRadiator.Models
             {
                 entity.HasKey(e => e.IdProject)
                     .HasName("Project_PK");
-
-                entity.Property(e => e.CreationDate).HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.Description).IsUnicode(false);
 

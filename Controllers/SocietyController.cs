@@ -21,17 +21,13 @@ namespace ProjectRadiator.Controllers
         [HttpGet("GetShortSocieties")]
         public SocietyShortResponse GetShortSocieties()
         {
-            var society = _context.Society
+            var response = new SocietyShortResponse();
+            response.Societies = _context.Society
                 .Include(x => x.IdSocietyNavigation)
                 .Include(x => x.People)
                 .Where(x => x.Name != "Bstorm")
                 .Select(x => x.ToSocietyShortDTO())
                 .ToList();
-
-            var response = new SocietyShortResponse
-            {
-                Societies = society
-            };
 
             return response;
         }
