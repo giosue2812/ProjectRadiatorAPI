@@ -48,7 +48,10 @@ namespace ProjectRadiator.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Name=ProjectRadiator");
+#pragma warning disable CS1030 // Directive #warning
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+                optionsBuilder.UseSqlServer("Data Source=desktop-pgp6817;Database=ProjectRadiator;Trusted_Connection=True;");
+#pragma warning restore CS1030 // Directive #warning
             }
         }
 
@@ -56,33 +59,17 @@ namespace ProjectRadiator.Models
         {
             modelBuilder.Entity<ContactCarnet>(entity =>
             {
-                entity.Property(e => e.AdressCity)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                entity.Property(e => e.AdressCity).IsUnicode(false);
 
-                entity.Property(e => e.AdressCountry)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                entity.Property(e => e.AdressCountry).IsUnicode(false);
 
-                entity.Property(e => e.AdressStreet)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                entity.Property(e => e.AdressStreet).IsUnicode(false);
 
-                entity.Property(e => e.CrationDate)
-                    .HasColumnType("datetime")
-                    .HasDefaultValueSql("(getdate())");
+                entity.Property(e => e.CreationDate).HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.Email)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                entity.Property(e => e.Email).IsUnicode(false);
 
-                entity.Property(e => e.IsSoftDeleted).HasColumnName("IS_SoftDeleted");
-
-                entity.Property(e => e.LasModificationDate).HasColumnType("datetime");
-
-                entity.Property(e => e.Phone)
-                    .HasMaxLength(20)
-                    .IsUnicode(false);
+                entity.Property(e => e.Phone).IsUnicode(false);
             });
 
             modelBuilder.Entity<Follow>(entity =>
@@ -90,21 +77,11 @@ namespace ProjectRadiator.Models
                 entity.HasKey(e => e.IdFollow)
                     .HasName("Follow_PK");
 
-                entity.Property(e => e.CommentCustomer)
-                    .HasMaxLength(255)
-                    .IsUnicode(false);
+                entity.Property(e => e.CommentCustomer).IsUnicode(false);
 
-                entity.Property(e => e.CommentDev)
-                    .IsRequired()
-                    .HasMaxLength(255)
-                    .IsUnicode(false);
+                entity.Property(e => e.CommentDev).IsUnicode(false);
 
-                entity.Property(e => e.DateFollow)
-                    .HasColumnName("Date_Follow")
-                    .HasColumnType("datetime")
-                    .HasDefaultValueSql("(getdate())");
-
-                entity.Property(e => e.IsSoftDeleted).HasColumnName("Is_SoftDeleted");
+                entity.Property(e => e.DateFollow).HasDefaultValueSql("(getdate())");
 
                 entity.HasOne(d => d.IdProjectNavigation)
                     .WithMany(p => p.Follow)
@@ -118,11 +95,7 @@ namespace ProjectRadiator.Models
                 entity.HasKey(e => new { e.IdPeople, e.IdFollow })
                     .HasName("FollowPeople_PK");
 
-                entity.Property(e => e.CreationDate)
-                    .HasColumnType("datetime")
-                    .HasDefaultValueSql("(getdate())");
-
-                entity.Property(e => e.LastModificationDate).HasColumnType("datetime");
+                entity.Property(e => e.CreationDate).HasDefaultValueSql("(getdate())");
 
                 entity.HasOne(d => d.IdFollowNavigation)
                     .WithMany(p => p.FollowPeople)
@@ -160,16 +133,9 @@ namespace ProjectRadiator.Models
                 entity.HasKey(e => e.IdJob)
                     .HasName("Job_PK");
 
-                entity.Property(e => e.CreationDate)
-                    .HasColumnType("datetime")
-                    .HasDefaultValueSql("(getdate())");
+                entity.Property(e => e.CreationDate).HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.Label)
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.LastModificationDate).HasColumnType("datetime");
+                entity.Property(e => e.Label).IsUnicode(false);
             });
 
             modelBuilder.Entity<Logger>(entity =>
@@ -177,19 +143,11 @@ namespace ProjectRadiator.Models
                 entity.HasKey(e => e.IdLog)
                     .HasName("Loh_PK");
 
-                entity.Property(e => e.DateLog)
-                    .HasColumnType("datetime")
-                    .HasDefaultValueSql("(getdate())");
+                entity.Property(e => e.DateLog).HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.Description)
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                entity.Property(e => e.Description).IsUnicode(false);
 
-                entity.Property(e => e.TypeLog)
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                entity.Property(e => e.TypeLog).IsUnicode(false);
             });
 
             modelBuilder.Entity<Metting>(entity =>
@@ -197,13 +155,9 @@ namespace ProjectRadiator.Models
                 entity.HasKey(e => e.IdMetting)
                     .HasName("Metting_PK");
 
-                entity.Property(e => e.MettingDate)
-                    .HasColumnType("datetime")
-                    .HasDefaultValueSql("(getdate())");
+                entity.Property(e => e.MettingDate).HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.MettingResult)
-                    .HasMaxLength(255)
-                    .IsUnicode(false);
+                entity.Property(e => e.MettingResult).IsUnicode(false);
 
                 entity.HasOne(d => d.IdProjectNavigation)
                     .WithMany(p => p.Metting)
@@ -235,13 +189,7 @@ namespace ProjectRadiator.Models
                 entity.HasKey(e => e.IdMilestones)
                     .HasName("Milestones_PK");
 
-                entity.Property(e => e.CreationDate)
-                    .HasColumnType("datetime")
-                    .HasDefaultValueSql("(getdate())");
-
-                entity.Property(e => e.DateMilestones).HasColumnType("date");
-
-                entity.Property(e => e.LastModificationDate).HasColumnType("datetime");
+                entity.Property(e => e.CreationDate).HasDefaultValueSql("(getdate())");
             });
 
             modelBuilder.Entity<MilestonesProject>(entity =>
@@ -267,16 +215,9 @@ namespace ProjectRadiator.Models
                 entity.HasKey(e => e.IdTypeMilestones)
                     .HasName("MilestonesType_PK");
 
-                entity.Property(e => e.CreationDate)
-                    .HasColumnType("datetime")
-                    .HasDefaultValueSql("(getdate())");
+                entity.Property(e => e.CreationDate).HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.LastModificationDate).HasColumnType("datetime");
-
-                entity.Property(e => e.TypeMilestones)
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                entity.Property(e => e.TypeMilestones).IsUnicode(false);
             });
 
             modelBuilder.Entity<MilestonesTypeMilestones>(entity =>
@@ -304,17 +245,9 @@ namespace ProjectRadiator.Models
 
                 entity.Property(e => e.IdPeople).ValueGeneratedNever();
 
-                entity.Property(e => e.FirstName)
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                entity.Property(e => e.FirstName).IsUnicode(false);
 
-                entity.Property(e => e.IdSociety).HasColumnName("Id_Society");
-
-                entity.Property(e => e.LastName)
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                entity.Property(e => e.LastName).IsUnicode(false);
 
                 entity.HasOne(d => d.IdPeopleNavigation)
                     .WithOne(p => p.People)
@@ -339,11 +272,7 @@ namespace ProjectRadiator.Models
                 entity.HasKey(e => new { e.IdPeople, e.IdJob })
                     .HasName("PeopleJob_PK");
 
-                entity.Property(e => e.EndDate).HasColumnType("datetime");
-
-                entity.Property(e => e.StartDate)
-                    .HasColumnType("datetime")
-                    .HasDefaultValueSql("(getdate())");
+                entity.Property(e => e.StartDate).HasDefaultValueSql("(getdate())");
 
                 entity.HasOne(d => d.IdJobNavigation)
                     .WithMany(p => p.PeopleJob)
@@ -363,27 +292,9 @@ namespace ProjectRadiator.Models
                 entity.HasKey(e => e.IdProject)
                     .HasName("Project_PK");
 
-                entity.Property(e => e.CreationDate)
-                    .HasColumnType("datetime")
-                    .HasDefaultValueSql("(getdate())");
+                entity.Property(e => e.Description).IsUnicode(false);
 
-                entity.Property(e => e.CreationDateUserId).HasColumnName("CreationDateUserID");
-
-                entity.Property(e => e.Description)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.EndDate).HasColumnType("datetime");
-
-                entity.Property(e => e.LastModificationDate).HasColumnType("datetime");
-
-                entity.Property(e => e.LastModificationUserId).HasColumnName("LastModificationUserID");
-
-                entity.Property(e => e.StartDate).HasColumnType("datetime");
-
-                entity.Property(e => e.Title)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                entity.Property(e => e.Title).IsUnicode(false);
 
                 entity.HasOne(d => d.IdSocietyNavigation)
                     .WithMany(p => p.Project)
@@ -397,11 +308,7 @@ namespace ProjectRadiator.Models
                 entity.HasKey(e => new { e.IdPeople, e.IdProject })
                     .HasName("ProjectPeople_PK");
 
-                entity.Property(e => e.EndDate).HasColumnType("datetime");
-
-                entity.Property(e => e.StartDate)
-                    .HasColumnType("datetime")
-                    .HasDefaultValueSql("(getdate())");
+                entity.Property(e => e.StartDate).HasDefaultValueSql("(getdate())");
 
                 entity.HasOne(d => d.IdPeopleNavigation)
                     .WithMany(p => p.ProjectPeople)
@@ -421,10 +328,6 @@ namespace ProjectRadiator.Models
                 entity.HasKey(e => new { e.IdProject, e.IdStage })
                     .HasName("ProjectStage_PK");
 
-                entity.Property(e => e.EndDate).HasColumnType("datetime");
-
-                entity.Property(e => e.StartDate).HasColumnType("datetime");
-
                 entity.HasOne(d => d.IdProjectNavigation)
                     .WithMany(p => p.ProjectStage)
                     .HasForeignKey(d => d.IdProject)
@@ -443,18 +346,9 @@ namespace ProjectRadiator.Models
                 entity.HasKey(e => e.IdGroupe)
                     .HasName("SecurityGroupe_PK");
 
-                entity.Property(e => e.CreationDate)
-                    .HasColumnType("datetime")
-                    .HasDefaultValueSql("(getdate())");
+                entity.Property(e => e.CreationDate).HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.IsSoftDeleted).HasColumnName("IS_SoftDeleted");
-
-                entity.Property(e => e.Label)
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.LastModificationDate).HasColumnType("datetime");
+                entity.Property(e => e.Label).IsUnicode(false);
             });
 
             modelBuilder.Entity<SecurityGroupeRole>(entity =>
@@ -480,8 +374,6 @@ namespace ProjectRadiator.Models
                 entity.HasKey(e => new { e.UserId, e.IdGroupe })
                     .HasName("SecurityGroupeUser_PK");
 
-                entity.Property(e => e.UserId).HasColumnName("UserID");
-
                 entity.HasOne(d => d.IdGroupeNavigation)
                     .WithMany(p => p.SecurityGroupeUser)
                     .HasForeignKey(d => d.IdGroupe)
@@ -500,18 +392,9 @@ namespace ProjectRadiator.Models
                 entity.HasKey(e => e.IdRole)
                     .HasName("SecurityRole_PK");
 
-                entity.Property(e => e.CreationDate)
-                    .HasColumnType("datetime")
-                    .HasDefaultValueSql("(getdate())");
+                entity.Property(e => e.CreationDate).HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.IsSoftDeleted).HasColumnName("IS_SoftDeleted");
-
-                entity.Property(e => e.Label)
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.LastModificationDate).HasColumnType("datetime");
+                entity.Property(e => e.Label).IsUnicode(false);
             });
 
             modelBuilder.Entity<SecurityUserRole>(entity =>
@@ -519,11 +402,7 @@ namespace ProjectRadiator.Models
                 entity.HasKey(e => new { e.UserId, e.IdRole })
                     .HasName("SecurityUserRole_PK");
 
-                entity.Property(e => e.EndDate).HasColumnType("datetime");
-
-                entity.Property(e => e.StartDate)
-                    .HasColumnType("datetime")
-                    .HasDefaultValueSql("(getdate())");
+                entity.Property(e => e.StartDate).HasDefaultValueSql("(getdate())");
 
                 entity.HasOne(d => d.IdRoleNavigation)
                     .WithMany(p => p.SecurityUserRole)
@@ -545,12 +424,7 @@ namespace ProjectRadiator.Models
 
                 entity.Property(e => e.IdSociety).ValueGeneratedNever();
 
-                entity.Property(e => e.IsProvider).HasColumnName("Is_Provider");
-
-                entity.Property(e => e.Name)
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                entity.Property(e => e.Name).IsUnicode(false);
 
                 entity.HasOne(d => d.IdSocietyNavigation)
                     .WithOne(p => p.Society)
@@ -564,11 +438,7 @@ namespace ProjectRadiator.Models
                 entity.HasKey(e => e.IdStage)
                     .HasName("Stages_PK");
 
-                entity.Property(e => e.CreationDate)
-                    .HasColumnType("datetime")
-                    .HasDefaultValueSql("(getdate())");
-
-                entity.Property(e => e.LasModificationDate).HasColumnType("datetime");
+                entity.Property(e => e.CreationDate).HasDefaultValueSql("(getdate())");
 
                 entity.HasOne(d => d.IdPeopleNavigation)
                     .WithMany(p => p.Stages)
@@ -586,13 +456,13 @@ namespace ProjectRadiator.Models
                     .WithMany(p => p.StagesTypeStages)
                     .HasForeignKey(d => d.IdStages)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("StagesTypeStages_TypeStages_FK");
+                    .HasConstraintName("StagesTypeStages_Stages_FK");
 
                 entity.HasOne(d => d.IdTypeStagesNavigation)
                     .WithMany(p => p.StagesTypeStages)
                     .HasForeignKey(d => d.IdTypeStages)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("StagesTypeStages_Stages_FK");
+                    .HasConstraintName("StagesTypeStages_TypeStages_FK");
             });
 
             modelBuilder.Entity<TypeFollow>(entity =>
@@ -600,18 +470,9 @@ namespace ProjectRadiator.Models
                 entity.HasKey(e => e.IdTypeFollow)
                     .HasName("TypeComment_PK");
 
-                entity.Property(e => e.CreationDate)
-                    .HasColumnType("datetime")
-                    .HasDefaultValueSql("(getdate())");
+                entity.Property(e => e.CreationDate).HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.IsSoftDeleted).HasColumnName("IS_SoftDeleted");
-
-                entity.Property(e => e.Label)
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.LastModificationDate).HasColumnType("datetime");
+                entity.Property(e => e.Label).IsUnicode(false);
             });
 
             modelBuilder.Entity<TypeStages>(entity =>
@@ -619,17 +480,9 @@ namespace ProjectRadiator.Models
                 entity.HasKey(e => e.IdStages)
                     .HasName("TypeStages_PK");
 
-                entity.Property(e => e.CreationDate)
-                    .HasColumnType("datetime")
-                    .HasDefaultValueSql("(getdate())");
+                entity.Property(e => e.CreationDate).HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.LastModificationDate).HasColumnType("datetime");
-
-                entity.Property(e => e.TypeStages1)
-                    .IsRequired()
-                    .HasColumnName("TypeStages")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                entity.Property(e => e.TypeStages1).IsUnicode(false);
             });
 
             modelBuilder.Entity<Users>(entity =>
@@ -637,14 +490,7 @@ namespace ProjectRadiator.Models
                 entity.HasKey(e => e.UserId)
                     .HasName("User_PK");
 
-                entity.Property(e => e.UserId).HasColumnName("UserID");
-
-                entity.Property(e => e.IsSoftDeleted).HasColumnName("IS_SoftDeleted");
-
-                entity.Property(e => e.Password)
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                entity.Property(e => e.Password).IsUnicode(false);
             });
 
             OnModelCreatingPartial(modelBuilder);

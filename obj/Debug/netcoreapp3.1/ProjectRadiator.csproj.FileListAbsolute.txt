@@ -54,8 +54,11 @@ C:\Programmation\ProjetBstorm\ProjectRadiator\ProjectRadiator\bin\Debug\netcorea
 C:\Programmation\ProjetBstorm\ProjectRadiator\ProjectRadiator\bin\Debug\netcoreapp3.1\ProjectRadiator.dll
 C:\Programmation\ProjetBstorm\ProjectRadiator\ProjectRadiator\bin\Debug\netcoreapp3.1\ProjectRadiator.pdb
 C:\Programmation\ProjetBstorm\ProjectRadiator\ProjectRadiator\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Design.dll
-C:\Programmation\ProjetBstorm\ProjectRadiator\ProjectRadiator\obj\Debug\netcoreapp3.1\ProjectRadiator.csproj.CoreCompileInputs.cache
-C:\Programmation\ProjetBstorm\ProjectRadiator\ProjectRadiator\obj\Debug\netcoreapp3.1\ProjectRadiator.MvcApplicationPartsAssemblyInfo.cache
 C:\Programmation\ProjetBstorm\ProjectRadiator\ProjectRadiator\obj\Debug\netcoreapp3.1\ProjectRadiator.dll
 C:\Programmation\ProjetBstorm\ProjectRadiator\ProjectRadiator\obj\Debug\netcoreapp3.1\ProjectRadiator.pdb
 C:\Programmation\ProjetBstorm\ProjectRadiator\ProjectRadiator\obj\Debug\netcoreapp3.1\ProjectRadiator.genruntimeconfig.cache
+C:\Programmation\ProjetBstorm\ProjectRadiator\ProjectRadiator\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.JsonPatch.dll
+C:\Programmation\ProjetBstorm\ProjectRadiator\ProjectRadiator\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+C:\Programmation\ProjetBstorm\ProjectRadiator\ProjectRadiator\bin\Debug\netcoreapp3.1\Newtonsoft.Json.Bson.dll
+C:\Programmation\ProjetBstorm\ProjectRadiator\ProjectRadiator\obj\Debug\netcoreapp3.1\ProjectRadiator.csproj.CoreCompileInputs.cache
+C:\Programmation\ProjetBstorm\ProjectRadiator\ProjectRadiator\obj\Debug\netcoreapp3.1\ProjectRadiator.MvcApplicationPartsAssemblyInfo.cache
