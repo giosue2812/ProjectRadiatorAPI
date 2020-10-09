@@ -48,10 +48,8 @@ namespace ProjectRadiator.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-#pragma warning disable CS1030 // Directive #warning
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
                 optionsBuilder.UseSqlServer("Data Source=desktop-pgp6817;Database=ProjectRadiator;Trusted_Connection=True;");
-#pragma warning restore CS1030 // Directive #warning
             }
         }
 
@@ -65,7 +63,7 @@ namespace ProjectRadiator.Models
 
                 entity.Property(e => e.AdressStreet).IsUnicode(false);
 
-                entity.Property(e => e.CreationDate).HasDefaultValueSql("(getdate())");
+                entity.Property(e => e.CrationDate).HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.Email).IsUnicode(false);
 
@@ -292,6 +290,8 @@ namespace ProjectRadiator.Models
                 entity.HasKey(e => e.IdProject)
                     .HasName("Project_PK");
 
+                entity.Property(e => e.CreationDate).HasDefaultValueSql("(getdate())");
+
                 entity.Property(e => e.Description).IsUnicode(false);
 
                 entity.Property(e => e.Title).IsUnicode(false);
@@ -449,12 +449,14 @@ namespace ProjectRadiator.Models
 
             modelBuilder.Entity<StagesTypeStages>(entity =>
             {
-                entity.HasKey(e => new { e.IdStages, e.IdTypeStages })
+                entity.HasKey(e => e.IdStages)
                     .HasName("StagesTypeStages_PK");
 
+                entity.Property(e => e.IdStages).ValueGeneratedNever();
+
                 entity.HasOne(d => d.IdStagesNavigation)
-                    .WithMany(p => p.StagesTypeStages)
-                    .HasForeignKey(d => d.IdStages)
+                    .WithOne(p => p.StagesTypeStages)
+                    .HasForeignKey<StagesTypeStages>(d => d.IdStages)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("StagesTypeStages_Stages_FK");
 

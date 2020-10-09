@@ -10,7 +10,6 @@ namespace ProjectRadiator.Models
         public Stages()
         {
             ProjectStage = new HashSet<ProjectStage>();
-            StagesTypeStages = new HashSet<StagesTypeStages>();
         }
 
         [Key]
@@ -25,9 +24,9 @@ namespace ProjectRadiator.Models
         [ForeignKey(nameof(IdPeople))]
         [InverseProperty(nameof(People.Stages))]
         public virtual People IdPeopleNavigation { get; set; }
+        [InverseProperty("IdStagesNavigation")]
+        public virtual StagesTypeStages StagesTypeStages { get; set; }
         [InverseProperty("IdStageNavigation")]
         public virtual ICollection<ProjectStage> ProjectStage { get; set; }
-        [InverseProperty("IdStagesNavigation")]
-        public virtual ICollection<StagesTypeStages> StagesTypeStages { get; set; }
     }
 }

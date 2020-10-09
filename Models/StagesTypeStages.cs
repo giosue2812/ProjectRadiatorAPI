@@ -9,7 +9,6 @@ namespace ProjectRadiator.Models
     {
         [Key]
         public int IdStages { get; set; }
-        [Key]
         public int IdTypeStages { get; set; }
 
         [ForeignKey(nameof(IdStages))]

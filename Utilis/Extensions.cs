@@ -18,23 +18,22 @@ namespace ProjectRadiator.Utilis
 
             ProjectShortDTO result = new ProjectShortDTO
             {
-                Id = project.IdProject,
+                IdProject = project.IdProject,
                 Title = project.Title,
                 Description = project.Description,
                 Society = project.IdSocietyNavigation.Name
             };
 
             if (project.ProjectStage.Count == 0) result.TypeStages = null;
-            else result.TypeStages = project.ProjectStage.FirstOrDefault().IdStageNavigation.StagesTypeStages.FirstOrDefault().IdTypeStagesNavigation.TypeStages1;
+            else result.TypeStages = project.ProjectStage.FirstOrDefault().IdStageNavigation.StagesTypeStages.IdTypeStagesNavigation.TypeStages1;
             if (project.Metting.Count == 0) result.MettingDate = null;
-            else result.MettingDate = project.Metting.FirstOrDefault().MettingDate;
-            if (project.MilestonesProject.Count == 0) result.MillestoneDate = null;
+            else result.MettingDate = project.Metting.OrderBy(x => x.MettingDate).FirstOrDefault().MettingDate;
+            if (project.MilestonesProject.Count == 0) result.Milestone = null;
             else
             {
-                result.MillestoneDate = project.MilestonesProject.FirstOrDefault().IdMilestonesNavigation.DateMilestones;
-                result.MillestoneType = project.MilestonesProject.FirstOrDefault().IdMilestonesNavigation.MilestonesTypeMilestones.FirstOrDefault().IdTypeMilestonesNavigation.TypeMilestones;
+                result.Milestone = project.MilestonesProject.Select(x => x.IdMilestonesNavigation.ToMilestonesProjectListDTO());
             }
-            result.peoples = project.ProjectPeople.Select(p => p.IdPeopleNavigation.ToTeamsBstormShortDTO()).ToList();
+            result.Peoples = project.ProjectPeople.Select(p => p.IdPeopleNavigation.ToTeamsBstormShortDTO()).ToList();
 
             return result;
         }
@@ -74,6 +73,7 @@ namespace ProjectRadiator.Utilis
 
             ProjectPartialListDTO result = new ProjectPartialListDTO
             {
+                IdProject = project.IdProject,
                 Project = project.Title,
                 Description = project.Description,
                 CreationDate = project.CreationDate,
@@ -90,14 +90,14 @@ namespace ProjectRadiator.Utilis
 
             ProjectDetailDTO result = new ProjectDetailDTO
             {
+                IdProject = project.IdProject,
                 Titre = project.Title,
                 Description = project.Description,
                 Society = project.IdSocietyNavigation.Name,
                 StartDate = project.StartDate,
-                TypeStages = project.ProjectStage.FirstOrDefault().IdStageNavigation.StagesTypeStages.FirstOrDefault().IdTypeStagesNavigation.TypeStages1,
+                TypeStages = project.ProjectStage.FirstOrDefault().IdStageNavigation.StagesTypeStages.IdTypeStagesNavigation.TypeStages1,
                 TypeFollows = project.Follow.Select(x => x.FollowTypeFollow.Select(x => x.IdTypeFollowNavigation.ToTypeFollowForOneProjectDTO())),
-                MillestoneDate = project.MilestonesProject.Select(x => x.IdMilestonesNavigation.DateMilestones).ToList(),
-                MilestonesTypes = project.MilestonesProject.Select(x => x.IdMilestonesNavigation.MilestonesTypeMilestones.Select(x => x.IdTypeMilestonesNavigation.TypeMilestones)).ToList()
+                Milestone = project.MilestonesProject.Select(x => x.IdMilestonesNavigation.ToMilestonesProjectListDTO())
             };
             return result;
         }
@@ -109,7 +109,9 @@ namespace ProjectRadiator.Utilis
             TypeFollowForOneProjectDTO result = new TypeFollowForOneProjectDTO
             {
                 Label = typeFollow.Label,
-                DescriptionFollow = typeFollow.FollowTypeFollow.FirstOrDefault().IdFollowNavigation.CommentDev
+                CommentDev = typeFollow.FollowTypeFollow.FirstOrDefault().IdFollowNavigation.CommentDev,
+                CommentCustomer = typeFollow.FollowTypeFollow.FirstOrDefault().IdFollowNavigation.CommentCustomer,
+                DateFollow = typeFollow.FollowTypeFollow.FirstOrDefault().IdFollowNavigation.DateFollow
             };
 
             return result;
@@ -162,6 +164,7 @@ namespace ProjectRadiator.Utilis
 
             TypeFollowsDTO result = new TypeFollowsDTO
             {
+                IdTypeFollow = typeFollow.IdTypeFollow,
                 Label = typeFollow.Label
             };
 
@@ -205,10 +208,10 @@ namespace ProjectRadiator.Utilis
             MilestonesProjectListDTO result = new MilestonesProjectListDTO
             {
                 Project = milestones.MilestonesProject.FirstOrDefault().IdProjectNavigation.Title,
-                MillestonesDate = milestones.DateMilestones
+                MilestonesDate = milestones.DateMilestones
             };
 
-            result.MillestonesTypeDTOs = milestones.MilestonesProject.Select(x => x.IdMilestonesNavigation.MilestonesTypeMilestones.Select(x => x.IdTypeMilestonesNavigation.ToMilestonesTypeDTO()));
+            result.MilestonesType =  milestones.MilestonesProject.Select(x => x.IdMilestonesNavigation.MilestonesTypeMilestones.Select(x => x.IdTypeMilestonesNavigation.ToMilestonesTypeDTO()));
             return result;
         }
 
@@ -218,6 +221,7 @@ namespace ProjectRadiator.Utilis
 
             MilestonesTypeDTO result = new MilestonesTypeDTO
             {
+                IdMilestone = milestonesType.IdTypeMilestones,
                 MilestoneType = milestonesType.TypeMilestones
             };
 
@@ -230,6 +234,7 @@ namespace ProjectRadiator.Utilis
 
             StageTypesDTO result = new StageTypesDTO
             {
+                IdTypeStage = typeStages.IdStages,
                 Label = typeStages.TypeStages1
             };
             return result;

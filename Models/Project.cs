@@ -23,7 +23,7 @@ namespace ProjectRadiator.Models
         [StringLength(50)]
         public string Description { get; set; }
         [Column(TypeName = "datetime")]
-        public DateTime CreationDate { get; set; } = DateTime.Now;
+        public DateTime CreationDate { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime? LastModificationDate { get; set; }
         public bool IsSoftDeleted { get; set; }

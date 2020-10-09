@@ -14,7 +14,6 @@ namespace ProjectRadiator.Models
 
         [Key]
         public int IdTypeMilestones { get; set; }
-        [Required]
         [StringLength(50)]
         public string TypeMilestones { get; set; }
         [Column(TypeName = "datetime")]

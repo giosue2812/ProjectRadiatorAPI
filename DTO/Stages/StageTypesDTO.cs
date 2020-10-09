@@ -7,6 +7,7 @@ namespace ProjectRadiator.DTO.Stages
 {
     public class StageTypesDTO
     {
+        public int IdTypeStage { get; set; }
         public string Label { get; set; }
     }
 }

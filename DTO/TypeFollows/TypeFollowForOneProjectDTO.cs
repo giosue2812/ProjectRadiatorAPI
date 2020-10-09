@@ -8,6 +8,8 @@ namespace ProjectRadiator.DTO
     public class TypeFollowForOneProjectDTO
     {
         public string Label { get; set; }
-        public string DescriptionFollow { get; set; }
+        public string CommentDev { get; set; }
+        public string CommentCustomer { get; set; }
+        public DateTime DateFollow { get; set; }
     }
 }

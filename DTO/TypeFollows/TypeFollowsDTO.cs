@@ -7,6 +7,7 @@ namespace ProjectRadiator.DTO.TypeFollows
 {
     public class TypeFollowsDTO
     {
+        public int IdTypeFollow { get; set; }
         public string Label { get; set; }
     }
 }

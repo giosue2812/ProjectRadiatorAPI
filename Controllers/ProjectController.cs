@@ -6,6 +6,7 @@ using ProjectRadiator.Models;
 using ProjectRadiator.Models.Responses;
 using ProjectRadiator.Utilis;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -27,31 +28,32 @@ namespace ProjectRadiator.Controllers
 
 
         //GET:api/project/GetShortProjects
-        [HttpGet("GetShortProjects")]
+        [HttpGet("GetShortProjects/{email}")]
         //This action return a short list of project
-        public ProjectShortResponse GetShortProjects()
+        public ProjectShortResponse GetShortProjects(string email)
         {
             var response = new ProjectShortResponse();
-                response.Projects = _context.Project
-                    .Include(x => x.IdSocietyNavigation)
-                    .Include(x => x.ProjectStage)
-                        .ThenInclude(x => x.IdStageNavigation)
-                        .ThenInclude(x => x.StagesTypeStages)
-                        .ThenInclude(x => x.IdTypeStagesNavigation)
-                    .Include(x => x.Metting)
-                    .Include(x => x.MilestonesProject)
-                        .ThenInclude(x => x.IdMilestonesNavigation)
-                        .ThenInclude(x => x.MilestonesTypeMilestones)
-                        .ThenInclude(x => x.IdTypeMilestonesNavigation)
-                    .Include(x => x.ProjectPeople)
-                        .ThenInclude(x => x.IdPeopleNavigation)
-                        .ThenInclude(x => x.PeopleJob)
-                        .ThenInclude(x => x.IdJobNavigation)
-                    .Select(x => x.ToProjectShortDTO())
-                    .ToList();
+            response.Projects = _context.Project
+                .Include(x => x.IdSocietyNavigation)
+                .Include(x => x.ProjectStage)
+                    .ThenInclude(x => x.IdStageNavigation)
+                    .ThenInclude(x => x.StagesTypeStages)
+                    .ThenInclude(x => x.IdTypeStagesNavigation)
+                .Include(x => x.Metting)
+                .Include(x => x.MilestonesProject)
+                    .ThenInclude(x => x.IdMilestonesNavigation)
+                    .ThenInclude(x => x.MilestonesTypeMilestones)
+                    .ThenInclude(x => x.IdTypeMilestonesNavigation)
+                .Include(x => x.ProjectPeople)
+                    .ThenInclude(x => x.IdPeopleNavigation)
+                    .ThenInclude(x => x.PeopleJob)
+                    .ThenInclude(x => x.IdJobNavigation)
+                    .Where(x => x.ProjectPeople.Any(x => x.IdPeopleNavigation.IdPeopleNavigation.Email == email))
+                .Select(x => x.ToProjectShortDTO())
+                .ToList();
 
-                return response;
-         }
+            return response;
+        }
 
         //GET:api/Project/GetPartilListProject
         [HttpGet("GetPartialListProject")]
@@ -63,7 +65,7 @@ namespace ProjectRadiator.Controllers
                 .Include(x => x.IdSocietyNavigation)
                 .Select(x => x.ToProjectPartialListDTO()).ToList();
             return response;
-                
+
         }
 
         [HttpGet("GetProject/{id}")]
@@ -106,7 +108,7 @@ namespace ProjectRadiator.Controllers
                 _context.Project.Add(project);
                 await _context.SaveChangesAsync();
                 return CreatedAtAction("GetProject", new { id = project.IdProject }, project);
-        }
+            }
             catch
             {
                 return new ProjectDetailResponse
@@ -115,30 +117,77 @@ namespace ProjectRadiator.Controllers
                     Status = 500,
                     ErrorMessage = "Error rise. Please contact the administrator."
                 };
-}
+            }
         }
 
         [HttpPut("PutProject/{id}")]
-        public ActionResult<ProjectDetailResponse> PutProjectDetail(int id, ProjectDetailDTO projectDetail)
+        public async Task<ActionResult<ProjectDetailResponse>> PutProjectDetail(int id,ProjectUpdateDTO projectUpdate)
         {
+
+            var findTypeMilestone = _context.MilestonesType.Find(projectUpdate.MilestonesType.IdTypeMilestones);
+            var findTypeFollow = _context.TypeFollow.Find(projectUpdate.IdTypeFollow);
 
             var findProject = _context.Project
                     .Include(x => x.IdSocietyNavigation)
+                    .Include(x => x.MilestonesProject)
+                        .ThenInclude(x => x.IdMilestonesNavigation)
+                    .Include(x => x.Follow)
+                        .ThenInclude(x => x.FollowTypeFollow)
+                        .ThenInclude(x => x.IdTypeFollowNavigation)
+                    .Include(x => x.ProjectStage)
+                        .ThenInclude(x => x.IdStageNavigation.StagesTypeStages)
+                        .ThenInclude(x => x.IdTypeStagesNavigation.StagesTypeStages)
+                        .ThenInclude(x => x.IdTypeStagesNavigation)
+                    .Include(x => x.ProjectPeople)
                     .Where(x => x.IdProject == id).FirstOrDefault();
 
-            findProject.Title = projectDetail.Titre;
-            findProject.IdSocietyNavigation.Name = projectDetail.Society;
-            findProject.Description = projectDetail.Description;
-            projectDetail.StartDate = findProject.CreationDate;
-            findProject.ProjectStage.FirstOrDefault().IdStageNavigation.StagesTypeStages.FirstOrDefault().IdTypeStagesNavigation.TypeStages1 = projectDetail.TypeStages;
-            findProject.Follow.FirstOrDefault().FollowTypeFollow.FirstOrDefault().IdTypeFollowNavigation.Label = projectDetail.TypeFollows.FirstOrDefault().FirstOrDefault().Label;
-            findProject.MilestonesProject.FirstOrDefault().IdMilestonesNavigation.DateMilestones = projectDetail.MillestoneDate.FirstOrDefault().Date;
-            findProject.MilestonesProject.FirstOrDefault().IdMilestonesNavigation.MilestonesTypeMilestones.FirstOrDefault().IdTypeMilestonesNavigation.TypeMilestones = projectDetail.MilestonesTypes.FirstOrDefault().FirstOrDefault();
+            findProject.Title = projectUpdate.Title;
+            findProject.Description = projectUpdate.Description;
+            findProject.StartDate = projectUpdate.StartDate;
+            findProject.ProjectStage.FirstOrDefault().IdStageNavigation.StagesTypeStages.IdTypeStages = projectUpdate.TypeStages.IdStages;
+
+            var mile = _context.Milestones.Add(new Milestones
+            {
+                CreationDate = DateTime.Now,
+                DateMilestones = projectUpdate.DateMilestones,
+            });
+            mile.Entity.MilestonesProject.Add(new MilestonesProject
+            {
+                IdMilestones = mile.Entity.IdMilestones,
+                IdProject = findProject.IdProject
+            });
+            mile.Entity.MilestonesTypeMilestones.Add(new MilestonesTypeMilestones
+            {
+                IdMilestones = mile.Entity.IdMilestones,
+                IdTypeMilestones = findTypeMilestone.IdTypeMilestones
+
+            });
+
+            var follow = _context.Follow.Add(new Follow
+            {
+                CommentDev = projectUpdate.CommentDev,
+                DateFollow = DateTime.Now,
+                IdProject = findProject.IdProject
+            });
+            follow.Entity.FollowPeople.Add(new FollowPeople
+            {
+                CreationDate = DateTime.Now,
+                IdFollow = follow.Entity.IdFollow,
+                IdPeople = findProject.ProjectPeople.FirstOrDefault().IdPeople
+            });
+            follow.Entity.FollowTypeFollow.Add(new FollowTypeFollow
+            {
+                IdFollow = follow.Entity.IdFollow,
+                IdTypeFollow = findTypeFollow.IdTypeFollow
+            });
+
+            _context.Follow.Add(follow.Entity);
+            _context.Milestones.Add(mile.Entity);
 
             try
             {
-                _context.SaveChanges();
-                return CreatedAtAction("GetProject", new { id = findProject.IdProject }, projectDetail);
+                await _context.SaveChangesAsync();
+                return CreatedAtAction("GetProject", new { id = findProject.IdProject }, projectUpdate);
             }
             catch
             {
@@ -151,4 +200,4 @@ namespace ProjectRadiator.Controllers
             }
         }
     }
-}
+} 

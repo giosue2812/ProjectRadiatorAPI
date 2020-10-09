@@ -14,7 +14,6 @@ namespace ProjectRadiator.Models
 
         [Key]
         public int IdStages { get; set; }
-        [Required]
         [Column("TypeStages")]
         [StringLength(50)]
         public string TypeStages1 { get; set; }

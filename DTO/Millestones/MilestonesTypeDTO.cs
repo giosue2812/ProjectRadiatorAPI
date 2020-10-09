@@ -7,6 +7,7 @@ namespace ProjectRadiator.DTO.Millestones
 {
     public class MilestonesTypeDTO
     {
+        public int IdMilestone { get; set; }
         public string MilestoneType { get; set; }
     }
 }

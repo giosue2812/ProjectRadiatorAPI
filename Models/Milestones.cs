@@ -19,8 +19,6 @@ namespace ProjectRadiator.Models
         public DateTime DateMilestones { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime CreationDate { get; set; }
-        [Column(TypeName = "datetime")]
-        public DateTime? LastModificationDate { get; set; }
         public bool IsSoftDeleted { get; set; }
 
         [InverseProperty("IdMilestonesNavigation")]
